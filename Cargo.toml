@@ -1,0 +1,18 @@
+[package]
+name = "clearc"
+version = "0.0.1"
+authors = ["enfipy"]
+edition = "2018"
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+envy = "0.4"
+chrono = "0.4"
+
+actix-web = "1.0.0-beta.5"
+
+r2d2_postgres = "0.14"
+
+[[bin]]
+name = "clearc"
+path = "src/main.rs"

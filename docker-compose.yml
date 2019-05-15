@@ -1,0 +1,45 @@
+version: "3"
+
+networks:
+  dev:
+
+volumes:
+  data:
+
+services:
+
+  clearc:
+    container_name: clearc
+    build:
+      args:
+        PROJECT: clearc
+      context: .
+      dockerfile: ./docker/dev.Dockerfile
+    volumes:
+      - ./src:/usr/src/clearc/src
+    environment:
+      PRODUCTION: "false"
+      SERVER_PORT: 8000
+      DB_CONNECTION: "postgresql://root@db:26257"
+
+      SETTINGS_TEST: "test env value"
+    ports:
+      - 8000:8000
+    networks:
+      - dev
+    depends_on:
+      - db
+
+  db:
+    container_name: db
+    image: cockroachdb/cockroach
+    command: start --insecure
+    volumes:
+      - data:/cockroach/cockroach-data
+    ports:
+      - "8080:8080"
+      - "26257:26257"
+    logging:
+      driver: none
+    networks:
+      - dev
