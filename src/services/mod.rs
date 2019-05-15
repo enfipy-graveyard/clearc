@@ -19,7 +19,6 @@ pub fn init_services(cnfg: Arc<Config>) {
         App::new().service(api)
     };
 
-
     HttpServer::new(app)
         .bind("0.0.0.0:8000")
         .expect("Failed to bind port for the http server")
