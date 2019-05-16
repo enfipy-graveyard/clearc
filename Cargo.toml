@@ -9,7 +9,9 @@ serde = { version = "1.0", features = ["derive"] }
 envy = "0.4"
 chrono = "0.4"
 actix-web = "1.0.0-beta.5"
-r2d2_postgres = { version = "0.14" }
+
+r2d2_postgres = "0.14.0"
+postgres = { version = "0.15", features = ["with-uuid"] }
 
 [[bin]]
 name = "clearc"

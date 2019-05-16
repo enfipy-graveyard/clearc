@@ -17,10 +17,11 @@ pub fn init(cnfg: &Arc<Config>, todo_cnr: &Arc<TodoController>) -> Scope {
     };
     web::scope("/todo")
         .data(todo)
-        .route("/", web::get().to(index))
+        .route("/info", web::get().to(info))
 }
 
-fn index(data: web::Data<TodoRest>) -> HttpResponse {
-    let res = data.todo_cnr.index();
+fn info(data: web::Data<TodoRest>) -> HttpResponse {
+    let info = data.todo_cnr.todo_info();
+    let res = format!("Todo info: {}", info);
     HttpResponse::Ok().body(res)
 }
