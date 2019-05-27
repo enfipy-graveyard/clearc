@@ -3,12 +3,14 @@ pub mod todo;
 
 use crate::config::Config;
 use crate::helpers::database;
+use crate::helpers::email;
 
 use actix_web::{web, App, HttpServer};
 use std::sync::Arc;
 
 pub fn init_services(cnfg: Arc<Config>) {
     let db_pool = database::init_pool(&cnfg, 5).expect("Failed to init database connection");
+    let _mailer = email::init_mailer(&cnfg).expect("Failed to init smtp connection");
 
     let system_ucs = system::usecase::init(&cnfg, &db_pool);
     let todo_ucs = todo::usecase::init(&cnfg, &db_pool);

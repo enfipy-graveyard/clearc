@@ -17,6 +17,7 @@ services:
       dockerfile: ./docker/dev.Dockerfile
     volumes:
       - ./src:/usr/src/clearc/src
+    env_file: .env
     environment:
       PRODUCTION: "false"
       SERVER_PORT: 8000

@@ -36,3 +36,6 @@ Temporary Items
 
 # Database data
 /data/
+
+# Environment variables
+.env

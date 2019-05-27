@@ -7,6 +7,7 @@ pub struct Config {
     pub production: bool,
     pub server_port: i16,
     pub db_connection: String,
+    pub sendgrid_api_key: String,
 
     #[serde(skip_deserializing)]
     pub settings: Option<Settings>,
