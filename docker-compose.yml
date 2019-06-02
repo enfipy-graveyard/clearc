@@ -44,3 +44,14 @@ services:
       driver: none
     networks:
       - dev
+
+  migrate:
+    container_name: migrate
+    image: migrate/migrate
+    command: -path /migrations -database cockroachdb://db:26257?sslmode=disable up 1
+    volumes:
+      - ./migrations:/migrations
+    networks:
+      - dev
+    depends_on:
+      - db

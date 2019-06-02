@@ -18,10 +18,19 @@ pub fn init(cnfg: &Arc<Config>, todo_cnr: &Arc<TodoController>) -> Scope {
     web::scope("/todo")
         .data(todo)
         .route("/info", web::get().to(info))
+        .route("/send", web::get().to(send_mail))
 }
 
 fn info(data: web::Data<TodoRest>) -> HttpResponse {
     let info = data.todo_cnr.todo_info();
     let res = format!("Todo info: {}", info);
     HttpResponse::Ok().body(res)
+}
+
+fn send_mail(data: web::Data<TodoRest>) -> HttpResponse {
+    data.todo_cnr.send_mail(
+        String::from("example@gmail.com"),
+        String::from("d-18bff6089988464ba6510126d81c80c2"),
+    );
+    HttpResponse::Ok().body("Mail sent")
 }

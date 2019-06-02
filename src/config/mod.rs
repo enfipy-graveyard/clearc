@@ -8,6 +8,8 @@ pub struct Config {
     pub server_port: i16,
     pub db_connection: String,
     pub sendgrid_api_key: String,
+    pub sendgrid_email_from: String,
+    pub sendgrid_name_from: String,
 
     #[serde(skip_deserializing)]
     pub settings: Option<Settings>,

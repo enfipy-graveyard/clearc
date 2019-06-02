@@ -10,13 +10,13 @@ use std::sync::Arc;
 
 pub fn init_services(cnfg: Arc<Config>) {
     let db_pool = database::init_pool(&cnfg, 5).expect("Failed to init database connection");
-    let _mailer = email::init_mailer(&cnfg).expect("Failed to init smtp connection");
+    let mailer = email::init_mailer(&cnfg);
 
     let system_ucs = system::usecase::init(&cnfg, &db_pool);
     let todo_ucs = todo::usecase::init(&cnfg, &db_pool);
 
     let system_cnr = system::controller::init(&cnfg, &system_ucs);
-    let todo_cnr = todo::controller::init(&cnfg, &todo_ucs, &system_ucs);
+    let todo_cnr = todo::controller::init(&cnfg, &todo_ucs, &system_ucs, &mailer);
 
     let app = move || {
         let system_dlr_rest = system::delivery::rest::init(&cnfg, &system_cnr);

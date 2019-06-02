@@ -1,29 +1,39 @@
-use crate::config;
+use crate::config::Config;
 
-use sendgrid::SGClient;
-use sendgrid::{Destination, Mail};
-use std::error::Error;
+use sendgrid::errors::SendgridError;
+use sendgrid::v3::{Email, Message, Personalization, Sender};
+use std::sync::Arc;
 
-// pub type Mailer = Pool<PostgresConnectionManager>;
+#[derive(Clone, Debug)]
+pub struct Mailer {
+    pub cnfg: Arc<Config>,
+    pub sender: Arc<Sender>,
+}
 
-pub fn init_mailer(cnfg: &config::Config) -> Result<(), Box<Error>> {
-    let client = SGClient::new(cnfg.sendgrid_api_key.clone());
-
-    let mail_info = Mail::new()
-        .add_to(Destination {
-            address: "example@gmail.com",
-            name: "example",
-        })
-        .add_from("support@example.com")
-        .add_subject("Test mail")
-        .add_text("Test message")
-        .add_html("<h1>Test message</h1>")
-        .add_from_name("Support");
-
-    match client.send(mail_info) {
-        Err(err) => println!("Error: {}", err),
-        Ok(body) => println!("Response: {}", body),
+pub fn init_mailer(cnfg: &Arc<Config>) -> Arc<Mailer> {
+    let sender = Sender::new(cnfg.sendgrid_api_key.clone());
+    let client = Mailer {
+        cnfg: cnfg.clone(),
+        sender: Arc::new(sender),
     };
+    Arc::new(client)
+}
 
-    Ok(())
+impl Mailer {
+    pub fn send(&self, to: String, template_id: String) -> Result<(), SendgridError> {
+        let pln = Personalization::new()
+            .add_to(Email::new().set_email(&to));
+
+        let msg = Message::new()
+            .set_from(
+                Email::new()
+                    .set_email(&self.cnfg.sendgrid_email_from)
+                    .set_name(&self.cnfg.sendgrid_name_from),
+            )
+            .set_template_id(&template_id)
+            .add_personalization(pln);
+
+        self.sender.send(&msg)?;
+        Ok(())
+    }
 }
