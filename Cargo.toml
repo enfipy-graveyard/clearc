@@ -10,11 +10,12 @@ edition = "2018"
 serde = { version = "1.0", features = ["derive"] }
 envy = "0.4"
 chrono = "0.4"
-uuid = { version = "0.7", features = ["serde", "v4"] }
-actix-web = "1.0.0-beta.5"
+uuid = { version = "0.5", features = ["serde", "v4"] }
+actix-web = "1.0.0-rc"
 
 r2d2_postgres = "0.14.0"
 postgres = { version = "0.15", features = ["with-uuid"] }
+postgres-derive = "0.3"
 sendgrid = "0.8.1"
 
 [[bin]]

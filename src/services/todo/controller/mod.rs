@@ -39,4 +39,9 @@ impl TodoController {
             .send(email, template_id)
             .expect("Failed to send mail");
     }
+
+    pub fn add_todo(&self, description: String) -> uuid::Uuid {
+        let todo = self.todo_ucs.add_todo(description);
+        todo.id
+    }
 }

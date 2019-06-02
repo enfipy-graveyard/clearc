@@ -2,6 +2,7 @@ use crate::config::Config;
 use crate::services::todo::controller::TodoController;
 
 use actix_web::{web, HttpResponse, Scope};
+use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 
 #[derive(Clone, Debug)]
@@ -19,6 +20,7 @@ pub fn init(cnfg: &Arc<Config>, todo_cnr: &Arc<TodoController>) -> Scope {
         .data(todo)
         .route("/info", web::get().to(info))
         .route("/send", web::get().to(send_mail))
+        .route("/add", web::post().to(add_todo))
 }
 
 fn info(data: web::Data<TodoRest>) -> HttpResponse {
@@ -33,4 +35,15 @@ fn send_mail(data: web::Data<TodoRest>) -> HttpResponse {
         String::from("d-18bff6089988464ba6510126d81c80c2"),
     );
     HttpResponse::Ok().body("Mail sent")
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+struct AddTodoReq {
+    description: String,
+}
+
+fn add_todo(req: web::Json<AddTodoReq>, data: web::Data<TodoRest>) -> HttpResponse {
+    let id = data.todo_cnr.add_todo(req.description.clone());
+    let res = format!("Todo added: {}", id);
+    HttpResponse::Ok().body(res)
 }
