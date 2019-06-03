@@ -44,4 +44,8 @@ impl TodoController {
         let todo = self.todo_ucs.add_todo(description);
         todo.id
     }
+
+    pub fn complete_todo(&self, id: uuid::Uuid) {
+        self.todo_ucs.complete_todo(id);
+    }
 }

@@ -21,6 +21,7 @@ pub fn init(cnfg: &Arc<Config>, todo_cnr: &Arc<TodoController>) -> Scope {
         .route("/info", web::get().to(info))
         .route("/send", web::get().to(send_mail))
         .route("/add", web::post().to(add_todo))
+        .route("/complete", web::post().to(complete_todo))
 }
 
 fn info(data: web::Data<TodoRest>) -> HttpResponse {
@@ -46,4 +47,14 @@ fn add_todo(req: web::Json<AddTodoReq>, data: web::Data<TodoRest>) -> HttpRespon
     let id = data.todo_cnr.add_todo(req.description.clone());
     let res = format!("Todo added: {}", id);
     HttpResponse::Ok().body(res)
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+struct CompleteTodoReq {
+    id: uuid::Uuid,
+}
+
+fn complete_todo(req: web::Json<CompleteTodoReq>, data: web::Data<TodoRest>) -> HttpResponse {
+    data.todo_cnr.complete_todo(req.id);
+    HttpResponse::Ok().body("Todo completed")
 }

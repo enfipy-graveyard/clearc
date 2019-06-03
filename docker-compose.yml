@@ -14,7 +14,7 @@ services:
       args:
         PROJECT: clearc
       context: .
-      dockerfile: ./docker/prod.Dockerfile
+      dockerfile: ./docker/dev.Dockerfile
     volumes:
       - ./src:/usr/src/clearc/src
     env_file: .env

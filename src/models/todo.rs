@@ -4,5 +4,11 @@ use uuid::Uuid;
 pub struct Todo {
     pub id: Uuid,
     pub description: String,
-    pub completed: bool,
+    pub status: TodoStatus,
+}
+
+#[derive(Clone, Debug)]
+pub enum TodoStatus {
+    Active = 0,
+    Completed = 1,
 }
