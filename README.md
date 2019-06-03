@@ -17,7 +17,7 @@ docker-compose up --build
 
 ## Production build:
 
-To build lightweight production image under just run:
+To build lightweight production image run:
 
 ```
 docker build -f docker/prod.Dockerfile -t test --build-arg PROJECT=clearc .
