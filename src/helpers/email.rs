@@ -21,8 +21,7 @@ pub fn init_mailer(cnfg: &Arc<Config>) -> Arc<Mailer> {
 
 impl Mailer {
     pub fn send(&self, to: String, template_id: String) -> Result<(), SendgridError> {
-        let pln = Personalization::new()
-            .add_to(Email::new().set_email(&to));
+        let pln = Personalization::new().add_to(Email::new().set_email(&to));
 
         let msg = Message::new()
             .set_from(

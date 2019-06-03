@@ -30,11 +30,15 @@ fn info(data: web::Data<TodoRest>) -> HttpResponse {
     HttpResponse::Ok().body(res)
 }
 
-fn send_mail(data: web::Data<TodoRest>) -> HttpResponse {
-    data.todo_cnr.send_mail(
-        String::from("example@gmail.com"),
-        String::from("d-18bff6089988464ba6510126d81c80c2"),
-    );
+#[derive(Debug, Serialize, Deserialize)]
+struct SendMailParams {
+    email: String,
+    template_id: String,
+}
+
+fn send_mail(params: web::Query<SendMailParams>, data: web::Data<TodoRest>) -> HttpResponse {
+    data.todo_cnr
+        .send_mail(params.email.clone(), params.template_id.clone());
     HttpResponse::Ok().body("Mail sent")
 }
 
