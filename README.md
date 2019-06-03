@@ -1,6 +1,6 @@
 # Rust Clean Architecture
 
-Project `clearc` - is an example of implementation of Clean Architecture in Rust language
+Project `clearc` - is an example of implementation of "Clean Architecture" by Uncle Bob in Rust language. Feel free to contribute.
 
 ## Usage:
 
@@ -13,8 +13,7 @@ docker-compose up --build
 ## Todo:
 
 1. Write more detailed README
-2. Add database migrations
-3. Finish actix setup
+2. Finish To-do base logic
 
 ## Production build:
 
