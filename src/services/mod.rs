@@ -2,10 +2,10 @@ pub mod system;
 pub mod todo;
 
 use crate::config::Config;
-use crate::helpers::database;
-use crate::helpers::email;
+use crate::helpers::{database, email, handler};
 
-use actix_web::{web, App, HttpServer};
+use actix_web::middleware::errhandlers::ErrorHandlers;
+use actix_web::{http, web, App, HttpServer};
 use std::sync::Arc;
 
 pub fn init_services(cnfg: Arc<Config>) {
@@ -26,7 +26,12 @@ pub fn init_services(cnfg: Arc<Config>) {
             .service(system_dlr_rest)
             .service(todo_dlr_rest);
 
-        App::new().service(api)
+        App::new()
+            .wrap(
+                ErrorHandlers::new()
+                    .handler(http::StatusCode::BAD_REQUEST, handler::bad_request_handler),
+            )
+            .service(api)
     };
 
     // Todo: Move to main file

@@ -1,3 +1,8 @@
+#[macro_use]
+extern crate json;
+#[macro_use]
+extern crate validator_derive;
+
 mod config;
 mod helpers;
 mod models;

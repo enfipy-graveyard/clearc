@@ -7,7 +7,7 @@ use std::time::Duration;
 
 pub type Database = Pool<PostgresConnectionManager>;
 
-pub fn init_pool(cnfg: &config::Config, retry_count: i16) -> Result<Database, Box<Error>> {
+pub fn init_pool(cnfg: &config::Config, retry_count: i16) -> Result<Database, Box<dyn Error>> {
     let conn_string: &str = &cnfg.db_connection;
 
     let delay = Duration::from_secs(1);

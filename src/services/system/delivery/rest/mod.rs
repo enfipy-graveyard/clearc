@@ -1,3 +1,4 @@
+use crate::helpers::handler;
 use crate::config::Config;
 use crate::services::system::controller::SystemController;
 
@@ -26,5 +27,5 @@ fn index(data: web::Data<SystemRest>) -> HttpResponse {
         "Server time: {}\nDatabase time: {}",
         server_time, database_time,
     );
-    HttpResponse::Ok().body(res)
+    handler::to_json(Ok(res))
 }
